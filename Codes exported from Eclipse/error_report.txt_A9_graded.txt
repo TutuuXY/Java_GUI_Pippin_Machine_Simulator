@@ -1,0 +1,1831 @@
+WARNING:
+line numbers in any exception messages might be
+slightly incorrect due to minor changes I made to
+get this tester to run.
+COMPILE TIME TESTS
+PippinTests/1.pip
+==============
+SYNOPSIS: whitespace between instruction and argument
+EXPECTED: NO ERROR
+CONTENTS:
+LOD   	%5
+//data
+0 0
+5 0
+BEGIN PROGRAM OUTPUT:
+LOD   	%5
+//data
+0 0
+5 0
+{0=0, 5=0}
+
+
+PippinTests/2.pip
+==============
+SYNOPSIS: whitespace after argument
+EXPECTED: NO ERROR
+CONTENTS:
+STO 1 	
+//data
+0 0
+BEGIN PROGRAM OUTPUT:
+STO 1 	
+//data
+0 0
+{0=0}
+
+
+PippinTests/3.pip
+==============
+SYNOPSIS: whitespace between data location and value
+EXPECTED: NO ERROR
+CONTENTS:
+STO 1
+//data
+0 	  0
+BEGIN PROGRAM OUTPUT:
+STO 1
+//data
+0 	  0
+{0=0}
+
+
+PippinTests/4.pip
+==============
+SYNOPSIS: whitespace after value
+EXPECTED: NO ERROR
+CONTENTS:
+ADD 2 	
+//data
+2 0	 
+BEGIN PROGRAM OUTPUT:
+ADD 2 	
+//data
+2 0	 
+{2=0}
+
+
+PippinTests/5.pip
+==============
+SYNOPSIS: blank lines at end of file
+EXPECTED: NO ERROR
+CONTENTS:
+ADDI 2 	
+//data
+2 0
+
+
+
+
+
+
+
+BEGIN PROGRAM OUTPUT:
+ADDI 2 	
+//data
+2 0
+
+
+
+
+
+
+
+{2=0}
+
+
+PippinTests/6.pip
+==============
+SYNOPSIS: Mixed case instruction names
+EXPECTED: NO ERROR
+CONTENTS:
+aNd 3 	
+//data
+3 0
+BEGIN PROGRAM OUTPUT:
+aNd 3 	
+//data
+3 0
+{3=0}
+
+
+PippinTests/7.pip
+==============
+SYNOPSIS: Non-blank line starts with whitespace
+EXPECTED: ERROR
+CONTENTS:
+	 ANDI 4 	
+//data
+4 0
+BEGIN PROGRAM OUTPUT:
+	 ANDI 4 	
+//data
+4 0
+Error! Line 1 	 ANDI 4 	
+A non-blank line that starts with whitespace.
+
+PippinTests/8.pip
+==============
+SYNOPSIS: Non-blank line starts with whitespace (data section)
+EXPECTED: ERROR
+CONTENTS:
+NOT
+//data
+	 FF 7fffffff
+BEGIN PROGRAM OUTPUT:
+NOT
+//data
+	 FF 7fffffff
+Error! Line 3 	 FF 7fffffff
+A non-blank line that starts with whitespace.
+
+PippinTests/9.pip
+==============
+SYNOPSIS: More that one //data line
+EXPECTED: ERROR
+CONTENTS:
+DIV 5 	
+//data
+//data
+5 0
+BEGIN PROGRAM OUTPUT:
+DIV 5 	
+//data
+//data
+5 0
+Error! Line 3 //data
+More than one //data line.
+
+PippinTests/10.pip
+==============
+SYNOPSIS: Extra stuff on //data line
+EXPECTED: ERROR
+CONTENTS:
+DIVI 6 	
+//data a
+6 0
+BEGIN PROGRAM OUTPUT:
+DIVI 6 	
+//data a
+6 0
+Error! Line 2 //data a
+Extra characters/elements on //data line.
+
+PippinTests/11.pip
+==============
+SYNOPSIS: Instruction that does not require argument has one
+EXPECTED: ERROR
+CONTENTS:
+NOT 5
+NOP a
+HALT 7
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+NOT 5
+NOP a
+HALT 7
+//data
+7 0
+Error! Line 1 NOT 5
+Too many arguments.
+
+PippinTests/12.pip
+==============
+SYNOPSIS: Instruction that requires argument does not have one
+EXPECTED: ERROR
+CONTENTS:
+MUL 
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+MUL 
+//data
+7 0
+Error! Line 1 MUL 
+Missing argument.
+
+PippinTests/13.pip
+==============
+SYNOPSIS: Instruction line has too many parts (no argument version)
+EXPECTED: ERROR
+CONTENTS:
+NOT 7 9
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+NOT 7 9
+//data
+7 0
+Error! Line 1 NOT 7 9
+Too many arguments.
+
+PippinTests/14.pip
+==============
+SYNOPSIS: Instruction line has too many parts (w/ argument version)
+EXPECTED: ERROR
+CONTENTS:
+MULI 7 9
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+MULI 7 9
+//data
+7 0
+Error! Line 1 MULI 7 9
+Too many arguments.
+
+PippinTests/15.pip
+==============
+SYNOPSIS: Instruction not in map
+EXPECTED: ERROR
+CONTENTS:
+NULL %5
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+NULL %5
+//data
+7 0
+Error! Line 1 NULL %5
+Unknown instruction.
+
+PippinTests/16.pip
+==============
+SYNOPSIS: Argument not hex numeric
+EXPECTED: ERROR
+CONTENTS:
+SUB %g
+//data
+7 0
+BEGIN PROGRAM OUTPUT:
+SUB %g
+//data
+7 0
+Error! Line 1 SUB %g
+Argument not hexadecimal numeric.
+
+PippinTests/17.pip
+==============
+SYNOPSIS: Memory address argument out of range
+EXPECTED: ERROR
+CONTENTS:
+SUB %100
+//data
+FF 0
+BEGIN PROGRAM OUTPUT:
+SUB %100
+//data
+FF 0
+Error! Line 1 SUB %100
+Location out of memory range.
+
+PippinTests/18.pip
+==============
+SYNOPSIS: Immediate argument out of int range
+EXPECTED: ERROR
+CONTENTS:
+SUBI 100000000
+//data
+FF 7fffffff
+BEGIN PROGRAM OUTPUT:
+SUBI 100000000
+//data
+FF 7fffffff
+Error! Line 1 SUBI 100000000
+Immediate argument out of Integer bound.
+
+PippinTests/19.pip
+==============
+SYNOPSIS: Location not hex numeric
+EXPECTED: ERROR
+CONTENTS:
+NOP
+//data
+g 10 
+BEGIN PROGRAM OUTPUT:
+NOP
+//data
+g 10 
+Error! Line 3 g 10 
+Location not hexadecimal numeric.
+
+PippinTests/20.pip
+==============
+SYNOPSIS: Value not hex numeric
+EXPECTED: ERROR
+CONTENTS:
+HALT
+//data
+a h 
+BEGIN PROGRAM OUTPUT:
+HALT
+//data
+a h 
+Error! Line 3 a h 
+Value not hexadecimal numeric.
+
+PippinTests/21.pip
+==============
+SYNOPSIS: Location out of memory range (too large)
+EXPECTED: ERROR
+CONTENTS:
+HALT
+//data
+100 b 
+BEGIN PROGRAM OUTPUT:
+HALT
+//data
+100 b 
+Error! Line 3 100 b 
+Location out of memory range.
+
+PippinTests/22.pip
+==============
+SYNOPSIS: Value out of int range (too large)
+EXPECTED: ERROR
+CONTENTS:
+HALT
+//data
+0 100000000 
+BEGIN PROGRAM OUTPUT:
+HALT
+//data
+0 100000000 
+Error! Line 3 0 100000000 
+Immediate argument out of Integer bound.
+
+PippinTests/23.pip
+==============
+SYNOPSIS: Missing value part of data line
+EXPECTED: ERROR
+CONTENTS:
+NOP
+//data
+FF 
+BEGIN PROGRAM OUTPUT:
+NOP
+//data
+FF 
+Error! Line 3 FF 
+Missing value part.
+
+PippinTests/24.pip
+==============
+SYNOPSIS: blank in between code
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+Error! Line 7 
+Blank line in the program.
+
+PippinTests/25.pip
+==============
+SYNOPSIS: blank in between data
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+
+2 1
+3 C
+10 8
+Error! Line 17 
+Blank line in the program.
+
+PippinTests/26.pip
+==============
+SYNOPSIS: location negative
+EXPECTED: ERROR
+CONTENTS:
+HALT
+//data
+-1 c 
+BEGIN PROGRAM OUTPUT:
+HALT
+//data
+-1 c 
+Error! Line 3 -1 c 
+Location out of memory range.
+
+PippinTests/27.pip
+==============
+SYNOPSIS: value out of range (too negative)
+EXPECTED: ERROR
+CONTENTS:
+HALT
+//data
+0 -100000000 
+BEGIN PROGRAM OUTPUT:
+HALT
+//data
+0 -100000000 
+Error! Line 3 0 -100000000 
+Immediate argument out of Integer bound.
+
+
+RUN TIME TESTS
+PippinTests/28.pip
+==============
+SYNOPSIS: Indirect Factorial8
+EXPECTED: NO ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUBI 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+LOD %0
+The accumulator is: 8
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+Acc:  8
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+STO %1
+The accumulator is: 8
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LOD %0
+The accumulator is: 8
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+SUBI 1
+The accumulator is: 7
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  7
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+STO %0
+The accumulator is: 7
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 16=7, 32=8}
+
+Acc:  7
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 16=7, 32=8}
+STO 5
+The accumulator is: 7
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  7
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+LOD %0
+The accumulator is: 7
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  7
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+MUL %1
+The accumulator is: 56
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  56
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+JUMP %2
+The accumulator is: 56
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+
+Acc:  56
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=8}
+STO %1
+The accumulator is: 56
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+
+Acc:  56
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+LOD %0
+The accumulator is: 7
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+
+Acc:  7
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+SUBI 1
+The accumulator is: 6
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+
+Acc:  6
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=7, 32=56}
+STO %0
+The accumulator is: 6
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=6, 32=56}
+
+Acc:  6
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=7, 16=6, 32=56}
+STO 5
+The accumulator is: 6
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  6
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+LOD %0
+The accumulator is: 6
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  6
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+MUL %1
+The accumulator is: 336
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  336
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+JUMP %2
+The accumulator is: 336
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+
+Acc:  336
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=56}
+STO %1
+The accumulator is: 336
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+
+Acc:  336
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+LOD %0
+The accumulator is: 6
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+
+Acc:  6
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+SUBI 1
+The accumulator is: 5
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+
+Acc:  5
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=6, 32=336}
+STO %0
+The accumulator is: 5
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=5, 32=336}
+
+Acc:  5
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=6, 16=5, 32=336}
+STO 5
+The accumulator is: 5
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  5
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+LOD %0
+The accumulator is: 5
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  5
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+MUL %1
+The accumulator is: 1680
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  1680
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+JUMP %2
+The accumulator is: 1680
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+
+Acc:  1680
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=336}
+STO %1
+The accumulator is: 1680
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+
+Acc:  1680
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+LOD %0
+The accumulator is: 5
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+
+Acc:  5
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+SUBI 1
+The accumulator is: 4
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+
+Acc:  4
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=5, 32=1680}
+STO %0
+The accumulator is: 4
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=4, 32=1680}
+
+Acc:  4
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=5, 16=4, 32=1680}
+STO 5
+The accumulator is: 4
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  4
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+LOD %0
+The accumulator is: 4
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  4
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+MUL %1
+The accumulator is: 6720
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  6720
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+JUMP %2
+The accumulator is: 6720
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+
+Acc:  6720
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=1680}
+STO %1
+The accumulator is: 6720
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+
+Acc:  6720
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+LOD %0
+The accumulator is: 4
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+
+Acc:  4
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+SUBI 1
+The accumulator is: 3
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+
+Acc:  3
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=4, 32=6720}
+STO %0
+The accumulator is: 3
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=3, 32=6720}
+
+Acc:  3
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=4, 16=3, 32=6720}
+STO 5
+The accumulator is: 3
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  3
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+LOD %0
+The accumulator is: 3
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  3
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+MUL %1
+The accumulator is: 20160
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  20160
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+JUMP %2
+The accumulator is: 20160
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+
+Acc:  20160
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=6720}
+STO %1
+The accumulator is: 20160
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+
+Acc:  20160
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+LOD %0
+The accumulator is: 3
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+
+Acc:  3
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+SUBI 1
+The accumulator is: 2
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+
+Acc:  2
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=3, 32=20160}
+STO %0
+The accumulator is: 2
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=2, 32=20160}
+
+Acc:  2
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=3, 16=2, 32=20160}
+STO 5
+The accumulator is: 2
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  2
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+LOD %0
+The accumulator is: 2
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  2
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+MUL %1
+The accumulator is: 40320
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  40320
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+JUMP %2
+The accumulator is: 40320
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+
+Acc:  40320
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=20160}
+STO %1
+The accumulator is: 40320
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+
+Acc:  40320
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+LOD %0
+The accumulator is: 2
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+
+Acc:  2
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+SUBI 1
+The accumulator is: 1
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+
+Acc:  1
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=2, 32=40320}
+STO %0
+The accumulator is: 1
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=1, 32=40320}
+
+Acc:  1
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=2, 16=1, 32=40320}
+STO 5
+The accumulator is: 1
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  1
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+CMPZ 5
+The accumulator is: 0
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  0
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+SUBI 1
+The accumulator is: -1
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  -1
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+JMPZ %3
+The accumulator is: -1
+The program counter value is: 9
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  -1
+PC:   9
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+LOD %0
+The accumulator is: 1
+The program counter value is: 10
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  1
+PC:   10
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+MUL %1
+The accumulator is: 40320
+The program counter value is: 11
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  40320
+PC:   11
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+JUMP %2
+The accumulator is: 40320
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  40320
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+STO %1
+The accumulator is: 40320
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  40320
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+LOD %0
+The accumulator is: 1
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  1
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+SUBI 1
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=1, 32=40320}
+STO %0
+The accumulator is: 0
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=0, 32=40320}
+
+Acc:  0
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 5=1, 16=0, 32=40320}
+STO 5
+The accumulator is: 0
+The program counter value is: 6
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+Acc:  0
+PC:   6
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+CMPZ 5
+The accumulator is: 1
+The program counter value is: 7
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+Acc:  1
+PC:   7
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+SUBI 1
+The accumulator is: 0
+The program counter value is: 8
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+Acc:  0
+PC:   8
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+JMPZ %3
+The accumulator is: 0
+The program counter value is: 12
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+Acc:  0
+PC:   12
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+HALT 0
+The accumulator is: 0
+The program counter value is: 12
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+Acc:  0
+PC:   12
+{0=16, 1=32, 2=1, 3=12, 5=0, 16=0, 32=40320}
+
+PippinTests/29.pip
+==============
+SYNOPSIS: DataAccessException too large location
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LOD %10
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 100
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LOD %10
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 100
+{0=16, 1=32, 2=1, 3=12, 16=256}
+
+LOD %0
+The accumulator is: 256
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=256}
+
+Acc:  256
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=256}
+STO %1
+The accumulator is: 256
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+
+Acc:  256
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+LOD %0
+The accumulator is: 256
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+
+Acc:  256
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=256, 32=256}
+LOD %10
+Error! Line 4 LOD %16
+Data Access Exception: Memory access exception
+
+PippinTests/30.pip
+==============
+SYNOPSIS: DataAccessException negative location
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LOD %10
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 -1
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LOD %10
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 -1
+{0=16, 1=32, 2=1, 3=12, 16=-1}
+
+LOD %0
+The accumulator is: -1
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=-1}
+
+Acc:  -1
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=-1}
+STO %1
+The accumulator is: -1
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+
+Acc:  -1
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+LOD %0
+The accumulator is: -1
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+
+Acc:  -1
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=-1, 32=-1}
+LOD %10
+Error! Line 4 LOD %16
+Data Access Exception: Memory access exception
+
+PippinTests/31.pip
+==============
+SYNOPSIS: DIV by 0
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+STO 1
+DIV 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+STO 1
+DIV 1
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+LOD %0
+The accumulator is: 8
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+Acc:  8
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+STO %1
+The accumulator is: 8
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LOD %0
+The accumulator is: 8
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+STO 1
+The accumulator is: 0
+The program counter value is: 5
+{0=16, 1=0, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   5
+{0=16, 1=0, 2=1, 3=12, 16=8, 32=8}
+DIV 1
+Error! Line 5 DIV 1
+Divided by Zero!
+
+PippinTests/32.pip
+==============
+SYNOPSIS: DIVI by 0
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+STO 1
+DIVI 0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+STO 1
+DIVI 0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+LOD %0
+The accumulator is: 8
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+Acc:  8
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+STO %1
+The accumulator is: 8
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LOD %0
+The accumulator is: 8
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+STO 1
+The accumulator is: 0
+The program counter value is: 5
+{0=16, 1=0, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   5
+{0=16, 1=0, 2=1, 3=12, 16=8, 32=8}
+DIVI 0
+Error! Line 5 DIVI 0
+Divided by Zero!
+
+PippinTests/33.pip
+==============
+SYNOPSIS: CodeAccessException negative pc
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LODI -1
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LODI -1
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+LOD %0
+The accumulator is: 8
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+Acc:  8
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+STO %1
+The accumulator is: 8
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LOD %0
+The accumulator is: 8
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LODI ffffffff
+The accumulator is: -1
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  -1
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+STO 0
+The accumulator is: -1
+The program counter value is: 6
+{0=-1, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  -1
+PC:   6
+{0=-1, 1=32, 2=1, 3=12, 16=8, 32=8}
+JUMP %0
+The accumulator is: -1
+The program counter value is: -1
+{0=-1, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  -1
+PC:   -1
+{0=-1, 1=32, 2=1, 3=12, 16=8, 32=8}
+Error! Line -1 
+Code Access Exception: Program counter out of range!
+
+PippinTests/34.pip
+==============
+SYNOPSIS: CodeAccessException too large pc
+EXPECTED: ERROR
+CONTENTS:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LODI 7FFFFFFF
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+BEGIN PROGRAM OUTPUT:
+LOD %0
+STO %1
+LOD %0
+SUB %0
+LODI 7FFFFFFF
+STO 0
+JUMP %0
+STO %0
+STO 5
+CMPZ 5
+SUBI 1
+JMPZ %3
+LOD %0
+MUL %1
+JUMP %2
+HALT
+//data
+0 10
+1 20
+2 1
+3 C
+10 8
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+LOD %0
+The accumulator is: 8
+The program counter value is: 1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+
+Acc:  8
+PC:   1
+{0=16, 1=32, 2=1, 3=12, 16=8}
+STO %1
+The accumulator is: 8
+The program counter value is: 2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   2
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LOD %0
+The accumulator is: 8
+The program counter value is: 3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  8
+PC:   3
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+SUB %0
+The accumulator is: 0
+The program counter value is: 4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  0
+PC:   4
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+LODI 7fffffff
+The accumulator is: 2147483647
+The program counter value is: 5
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  2147483647
+PC:   5
+{0=16, 1=32, 2=1, 3=12, 16=8, 32=8}
+STO 0
+The accumulator is: 2147483647
+The program counter value is: 6
+{0=2147483647, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  2147483647
+PC:   6
+{0=2147483647, 1=32, 2=1, 3=12, 16=8, 32=8}
+JUMP %0
+The accumulator is: 2147483647
+The program counter value is: 2147483647
+{0=2147483647, 1=32, 2=1, 3=12, 16=8, 32=8}
+
+Acc:  2147483647
+PC:   2147483647
+{0=2147483647, 1=32, 2=1, 3=12, 16=8, 32=8}
+Error! Line 2147483647 
+Code Access Exception: Program counter out of range!
+
