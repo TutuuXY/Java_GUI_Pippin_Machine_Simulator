@@ -9,6 +9,8 @@ Overall Description:
 The project has two parts. The "Program" package has the codes for handling simulator logic and the data storage. The "ProgramView" package has the codes for presenting views and interactivating between users and the back-end part.
 
 Running Instruction:
+You may download the whole folder and import it into eclipse.
+
 Please run BigFrame.java under ProgramView package for GUI implementation. For execution without GUI, please run ExecProgram.java under Program package.
 
 With GUI running mode, you could load testing pippin machine language, which is a variant of assembly language into the GUI by clicking on File->Load Source... Then you could select programs such as QuickSort.pip, MergeSort.pip or InsertionSort.pip.
