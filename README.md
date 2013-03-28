@@ -8,7 +8,7 @@ Java Implementation of a GUI Pippin Machine Simulator by using singleton design 
 Overall Description:
 	The project has two parts. The "Program" package has the codes for handling simulator logic and the data storage. The "ProgramView" package has the codes for presenting views and interactivating between users and the back-end part.
 
-![My image](https://github.com/TutuuXY/Snapshots_for_Readmes_of_all_projects/blob/master/Java_GUI_Pippin_Machine_Simulator.jpg)
+![My image](https://raw.github.com/TutuuXY/Snapshots_for_Readmes_of_all_projects/master/Java_GUI_Pippin_Machine_Simulator.jpg)
 
 Running Instruction:
 	(1) You can directly run the Pippin.jar.
