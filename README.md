@@ -3,7 +3,7 @@ Java_GUI_Pippin_Machine_Simulator
 
 Finish Data: Dec 2010
 
-Java Implementation of a GUI Pippin Machine Simulator by using singleton design pattern. Final Project done in SUNY Binghamton CS140 "Programming with objects" Course.
+Java Implementation of a GUI Pippin Machine Simulator. Final Project done in SUNY Binghamton CS140 "Programming with objects" Course.
 
 Overall Description:
 	The project has two parts. The "Program" package has the codes for handling simulator logic and the data storage. The "ProgramView" package has the codes for presenting views and interactivating between users and the back-end part.
